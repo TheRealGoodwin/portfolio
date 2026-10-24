@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Goodwin — COBOL Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#020a04;--fg:#d8ffe0;--mut:#5f9a6c;--a:#1fa34a;--b:#33ff66;--c:#ffb000;--card:rgba(255,255,255,.04);--line:rgba(255,255,255,.09)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif;overflow-x:hidden;cursor:none}
+a{color:inherit;text-decoration:none}
+#space{position:fixed;inset:0;z-index:0}
+.cursor,.ring{position:fixed;pointer-events:none;z-index:999;border-radius:50%;transform:translate(-50%,-50%)}
+.cursor{width:8px;height:8px;background:var(--b);mix-blend-mode:difference}
+.ring{width:40px;height:40px;border:1px solid var(--a);transition:width .25s,height .25s,border-color .25s}
+.ring.hov{width:70px;height:70px;border-color:var(--c)}
+nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:20px 5vw;backdrop-filter:blur(12px);background:linear-gradient(var(--bg),transparent)}
+.logo{font-family:'JetBrains Mono';font-weight:600}
+.logo span{color:var(--b)}
+main{position:relative;z-index:2}
+section{min-height:100vh;padding:120px 5vw;display:flex;flex-direction:column;justify-content:center}
+.hero h1{font-size:clamp(48px,11vw,170px);line-height:.9;font-weight:700;letter-spacing:-.04em}
+.hero h1 .g{background:linear-gradient(90deg,var(--a),var(--b),var(--c),var(--a));background-size:300%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:flow 8s linear infinite}
+@keyframes flow{to{background-position:300%}}
+.glitch{position:relative;display:inline-block}
+.glitch:hover{animation:gl .3s steps(2) infinite}
+@keyframes gl{0%{text-shadow:3px 0 var(--c),-3px 0 var(--b)}50%{text-shadow:-3px 0 var(--c),3px 0 var(--b)}}
+.role{font-family:'JetBrains Mono';font-size:clamp(16px,2.2vw,26px);color:var(--mut);margin-top:30px;min-height:1.5em}
+.role b{color:var(--b);font-weight:400}
+.caret{display:inline-block;width:.6em;height:1.1em;background:var(--b);vertical-align:middle;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.cta{display:flex;gap:16px;margin-top:50px;flex-wrap:wrap}
+.btn{padding:16px 30px;border-radius:100px;border:1px solid var(--line);font-weight:600;position:relative;overflow:hidden;transition:transform .2s}
+.btn.p{background:linear-gradient(90deg,var(--a),var(--c));border:0}
+.btn:hover{transform:translateY(-3px)}
+.scroll{position:absolute;bottom:40px;left:5vw;font-family:'JetBrains Mono';font-size:12px;color:var(--mut);letter-spacing:.3em}
+h2{font-size:clamp(36px,6vw,80px);letter-spacing:-.03em;margin-bottom:60px}
+h2 small{display:block;font-family:'JetBrains Mono';font-size:14px;color:var(--b);letter-spacing:.3em;margin-bottom:14px}
+.reveal{opacity:0;transform:translateY(60px);transition:1s cubic-bezier(.2,.8,.2,1)}
+.reveal.on{opacity:1;transform:none}
+.about{display:grid;grid-template-columns:1.2fr 1fr;gap:60px;align-items:center}
+.about p{font-size:clamp(18px,2vw,24px);line-height:1.6;color:var(--mut)}
+.about p em{color:var(--fg);font-style:normal}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.stat{padding:30px;border:1px solid var(--line);border-radius:20px;background:var(--card);backdrop-filter:blur(8px)}
+.stat b{font-size:48px;display:block;background:linear-gradient(var(--b),var(--a));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{color:var(--mut);font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px}
+.card{position:relative;padding:36px;border-radius:24px;background:var(--card);border:1px solid var(--line);transform-style:preserve-3d;transition:transform .15s;overflow:hidden;min-height:320px;display:flex;flex-direction:column}
+.card::before{content:"";position:absolute;inset:0;background:radial-gradient(500px circle at var(--x,50%) var(--y,50%),rgba(124,92,255,.25),transparent 40%);opacity:0;transition:opacity .3s}
+.card:hover::before{opacity:1}
+.card .n{font-family:'JetBrains Mono';color:var(--c);font-size:13px}
+.card h3{font-size:30px;margin:14px 0;transform:translateZ(40px)}
+.card p{color:var(--mut);line-height:1.6;flex:1;transform:translateZ(20px)}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.tags span{font-family:'JetBrains Mono';font-size:12px;padding:6px 12px;border-radius:100px;border:1px solid var(--line);color:var(--b)}
+.marquee{overflow:hidden;border-block:1px solid var(--line);padding:30px 0;margin:0 -5vw}
+.track{display:flex;gap:60px;width:max-content;animation:mq 30s linear infinite;font-size:clamp(30px,5vw,64px);font-weight:700}
+.track span:nth-child(odd){-webkit-text-stroke:1px var(--mut);color:transparent}
+@keyframes mq{to{transform:translateX(-50%)}}
+.term{max-width:900px;width:100%;background:#000;font-family:'IBM Plex Mono','JetBrains Mono',monospace;font-size:15px;text-transform:uppercase;color:#4cff4c;padding:18px 22px;border:14px solid #2a2a2a;border-radius:18px;box-shadow:inset 0 0 60px rgba(76,255,76,.12),0 0 0 2px #111,0 40px 120px rgba(51,255,102,.2);text-shadow:0 0 4px currentColor;line-height:1.45}
+.term .hd{display:flex;justify-content:space-between;color:#5ad8ff}
+.term .hd b{color:#fff;font-weight:400}
+.term .rule{color:#5ad8ff;overflow:hidden;white-space:nowrap}
+#out{height:340px;overflow-y:auto;white-space:pre-wrap;scrollbar-width:none;margin-top:6px}
+#out .k{color:#4cff4c}#out .e{color:#ff4040}#out .w{color:#fff}#out .t{color:#40ffff}#out .y{color:#ffff40}#out .p{color:#ff80ff}
+.in{display:flex;gap:10px;color:#fff}
+.in input{flex:1;background:none;border:0;outline:0;color:#fff;font:inherit;text-transform:uppercase;cursor:none;caret-color:#4cff4c;text-shadow:inherit;border-bottom:1px solid #4cff4c55}
+.pf{display:flex;flex-wrap:wrap;gap:4px 18px;color:#5ad8ff;margin-top:8px}
+.oia{display:flex;justify-content:space-between;margin-top:10px;padding-top:4px;border-top:1px solid #5ad8ff55;color:#5ad8ff;font-size:12px}
+.timeline{border-left:1px solid var(--line);margin-left:10px}
+.job{position:relative;padding:0 0 50px 40px}
+.job::before{content:"";position:absolute;left:-7px;top:6px;width:13px;height:13px;border-radius:50%;background:var(--b);box-shadow:0 0 20px var(--b)}
+.job time{font-family:'JetBrains Mono';font-size:13px;color:var(--mut)}
+.job h3{font-size:26px;margin:6px 0}
+.job p{color:var(--mut);max-width:640px;line-height:1.6}
+.contact{text-align:center;align-items:center;background:var(--bg)}
+.contact .big{font-size:clamp(40px,9vw,140px);font-weight:700;letter-spacing:-.04em;line-height:1}
+.contact .big span{background:linear-gradient(90deg,var(--b),var(--c));-webkit-background-clip:text;background-clip:text;color:transparent}
+.soc{display:flex;gap:30px;margin-top:50px;font-family:'JetBrains Mono';color:var(--mut)}
+.soc a:hover{color:var(--b)}
+footer{position:relative;z-index:2;background:var(--bg);text-align:center;padding:30px;color:var(--mut);font-size:12px;font-family:'JetBrains Mono'}
+body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;background:repeating-linear-gradient(transparent 0 2px,rgba(0,0,0,.25) 2px 4px)}
+.hero h1,.contact .big{text-shadow:0 0 30px rgba(51,255,102,.25)}
+#prog{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--a),var(--b),var(--c));z-index:100;width:0}
+@media(max-width:760px){.about{grid-template-columns:1fr}body{cursor:auto}.cursor,.ring{display:none}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="prog"></div>
+<canvas id="space"></canvas>
+<div class="cursor"></div><div class="ring"></div>
+<nav>
+  <a class="logo" href="#">&lt;Goodwin<span>/</span>&gt;</a></nav>
+<main>
+<section class="hero">
+  <h1><span class="glitch">Keeping</span><br><span class="g">the world</span><br><span class="glitch">running.</span></h1>
+  <div class="role">&gt; <b id="typed"></b><span class="caret"></span></div>
+  <div class="cta"><a class="btn p" href="#work">See my work ↓</a><a class="btn" href="#contact">Get in touch</a></div>
+</section>
+
+<section id="about">
+  <h2 class="reveal"><small>01 — IDENTIFICATION DIVISION</small>Mainframe. Reliable. Timeless.</h2>
+  <div class="about">
+    <p class="reveal">Most of the world's card swipes, bank transfers and insurance claims still go through COBOL. I build, maintain and <em>modernize</em> those systems on <em>IBM z/OS</em>: batch jobs that run every night without fail, CICS transactions that answer in milliseconds, and APIs that connect 1970s core logic to cloud apps.</p>
+    <div class="stats reveal">
+      <div class="stat"><b data-c="15">0</b><span>years on z/OS</span></div>
+      <div class="stat"><b data-c="2">0</b><span>M lines of COBOL maintained</span></div>
+      <div class="stat"><b data-c="40">0</b><span>M transactions / day</span></div>
+      <div class="stat"><b data-c="0">0</b><span>missed nightly batches</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee"><div class="track">
+  <span>COBOL</span><span>JCL</span><span>CICS</span><span>DB2</span><span>z/OS</span><span>IMS</span><span>VSAM</span><span>REXX</span><span>PL/I</span><span>z/OS Connect</span>
+  <span>COBOL</span><span>JCL</span><span>CICS</span><span>DB2</span><span>z/OS</span><span>IMS</span><span>VSAM</span><span>REXX</span><span>PL/I</span><span>z/OS Connect</span>
+</div></div>
+
+<section id="work">
+  <h2 class="reveal"><small>02 — PROCEDURE DIVISION</small>Systems I've kept alive.</h2>
+  <div class="grid">
+    <a class="card reveal" href="#"><span class="n">/01</span><h3>Core Banking Rewire</h3><p>Exposed 300 CICS transactions as REST APIs using z/OS Connect so a mobile banking app could use them. The COBOL logic itself was left unchanged.</p><div class="tags"><span>CICS</span><span>z/OS Connect</span><span>JSON</span></div></a>
+    <a class="card reveal" href="#"><span class="n">/02</span><h3>Batch Window Crusher</h3><p>Shrank the nightly settlement batch from 7h to 2h40m by tuning DB2 SQL, replacing sorts with DFSORT and rescheduling JCL to run steps in parallel.</p><div class="tags"><span>JCL</span><span>DB2</span><span>DFSORT</span></div></a>
+    <a class="card reveal" href="#"><span class="n">/03</span><h3>VSAM → DB2 Migration</h3><p>Moved 4 TB of insurance policy data from VSAM to DB2 with no downtime, using parallel runs and checks that the results matched.</p><div class="tags"><span>VSAM</span><span>DB2</span><span>COBOL</span></div></a>
+    <a class="card reveal" href="#"><span class="n">/04</span><h3>Mainframe DevOps</h3><p>Brought Git, Jenkins and automated unit tests to a 40-year-old codebase. Releases went from quarterly to weekly.</p><div class="tags"><span>Zowe</span><span>Git</span><span>zUnit</span></div></a>
+  </div>
+</section>
+
+<section id="xp">
+  <h2 class="reveal"><small>03 — EXPERIENCE</small>The journey.</h2>
+  <div class="timeline">
+    <div class="job reveal"><time>2019 — NOW</time><h3>Lead Mainframe Engineer · Northern Trust Bank</h3><p>Own the core payments platform. Led the API modernization program and mentor new COBOL developers.</p></div>
+    <div class="job reveal"><time>2014 — 2019</time><h3>Senior COBOL Developer · Atlas Insurance</h3><p>Maintained the policy and claims systems: 1.2M lines of COBOL/CICS. Led the VSAM to DB2 migration.</p></div>
+    <div class="job reveal"><time>2010 — 2014</time><h3>COBOL Programmer · Federal Data Services</h3><p>Batch processing for government benefits. Learned JCL the hard way: from ABEND dumps.</p></div>
+  </div>
+</section>
+
+<section id="shell">
+  <h2 class="reveal"><small>04 — TSO/ISPF</small>Log on to my mainframe.</h2>
+  <div class="term reveal">
+    <div class="hd"><span>SDSF OPERLOG &nbsp;SYS1 &nbsp;<b id="clk"></b></span><span>LINE 1 &nbsp;COLUMNS 1 80</span></div>
+    <div class="rule">- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</div>
+    <div id="out"></div>
+    <div class="in"><span>COMMAND INPUT ===&gt;</span><input id="cmd" autocomplete="off" spellcheck="false" placeholder="HELP"><span>SCROLL ===&gt; CSR</span></div>
+    <div class="pf"><span>F1=HELP</span><span>F3=END</span><span>F5=IFIND</span><span>F7=UP</span><span>F8=DOWN</span><span>F12=RETRIEVE</span></div>
+    <div class="oia"><span>4B&nbsp;&nbsp;MA&nbsp;&nbsp;a</span><span id="pos">01/021</span></div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <h2 class="reveal"><small>05 — CONTACT</small></h2>
+  <div class="big reveal">STOP RUN?<br>Never. <span>Let's talk.</span></div>
+  <div class="soc reveal"><a href="#">GitHub</a><a href="#">LinkedIn</a><a href="#">X</a></div>
+</section>
+</main>
+<footer>© 2026 I.M. Goodwin — compiled clean · RC=0000</footer>
+
+<script>
+// particle morph: words form on right side, mouse repels, click/scroll/warp scatters
+const cv=document.getElementById('space'),cx=cv.getContext('2d');let W,H,mx=0,my=0,warp=1,P=[],wi=0;
+const WORDS=['COBOL','JCL','CICS','DB2','z/OS','RC=0'];
+function target(){const o=document.createElement('canvas'),ox=o.getContext('2d');o.width=W;o.height=H;ox.fillStyle='#fff';
+  const wide=W>900,fs=wide?Math.min(W/6,H/3):Math.min(W/3.5,H/4);
+  ox.font=`900 ${fs}px sans-serif`;ox.textAlign='center';ox.textBaseline='middle';ox.fillText(WORDS[wi],wide?W*.7:W/2,wide?H*.5:H*.78);
+  const d=ox.getImageData(0,0,W,H).data,pts=[];for(let y=0;y<H;y+=5)for(let X=0;X<W;X+=5)if(d[(y*W+X)*4+3]>128)pts.push([X,y]);
+  while(P.length<pts.length)P.push({x:Math.random()*W,y:Math.random()*H,vx:0,vy:0,h:Math.random()*40+110});
+  P.forEach((p,i)=>{const q=pts[i%pts.length];p.tx=q[0];p.ty=q[1]})}
+const rs=()=>{W=cv.width=innerWidth;H=cv.height=innerHeight;target()};rs();addEventListener('resize',rs);
+setInterval(()=>{wi=(wi+1)%WORDS.length;target()},3500);
+const blast=s=>P.forEach(p=>{const a=Math.random()*6.28,v=Math.random()*s;p.vx+=Math.cos(a)*v;p.vy+=Math.sin(a)*v});
+addEventListener('click',e=>{if(!e.target.closest('a,input,.term'))blast(40)});
+function draw(){cx.fillStyle='rgba(2,10,4,.22)';cx.fillRect(0,0,W,H);cx.globalCompositeOperation='lighter';
+  if(warp>1.5)blast(warp*.4);
+  // canvas scrolls up with contact section instead of sitting behind it
+  const off=Math.min(0,document.getElementById('contact').getBoundingClientRect().top-H);cv.style.transform=`translateY(${off}px)`;
+  const px=mx*W+W/2,py=my*H+H/2-off;
+  for(const p of P){const dx=p.x-px,dy=p.y-py,d=dx*dx+dy*dy;if(d<14400){const f=(14400-d)/14400*6,r=Math.sqrt(d)||1;p.vx+=dx/r*f;p.vy+=dy/r*f}
+    p.vx+=(p.tx-p.x)*.012;p.vy+=(p.ty-p.y)*.012;p.vx*=.9;p.vy*=.9;p.x+=p.vx;p.y+=p.vy;
+    const sp=Math.min(1,Math.hypot(p.vx,p.vy)/10);cx.fillStyle=`hsla(${p.h-sp*90},100%,${45+sp*30}%,.75)`;cx.fillRect(p.x,p.y,2.2,2.2)}
+  cx.globalCompositeOperation='source-over';warp+=(1-warp)*.1;requestAnimationFrame(draw)}draw();
+let ly=scrollY;addEventListener('scroll',()=>{warp=Math.min(8,warp+Math.abs(scrollY-ly)*.02);ly=scrollY;
+  document.getElementById('prog').style.width=scrollY/(document.body.scrollHeight-innerHeight)*100+'%'});
+
+// cursor
+const cu=document.querySelector('.cursor'),ri=document.querySelector('.ring');let rx=0,ry=0,tx=0,ty=0;
+addEventListener('mousemove',e=>{tx=e.clientX;ty=e.clientY;cu.style.left=tx+'px';cu.style.top=ty+'px';mx=tx/W-.5;my=ty/H-.5});
+(function f(){rx+=(tx-rx)*.15;ry+=(ty-ry)*.15;ri.style.left=rx+'px';ri.style.top=ry+'px';requestAnimationFrame(f)})();
+document.querySelectorAll('a,.card,input').forEach(el=>{el.onmouseenter=()=>ri.classList.add('hov');el.onmouseleave=()=>ri.classList.remove('hov')});
+
+// typer
+const roles=['DISPLAY "COBOL DEVELOPER".','Mainframe Engineer','CICS / DB2 Specialist','Legacy Modernizer','Batch Job Whisperer'];let ri2=0,ci=0,del=false;
+const ty2=document.getElementById('typed');
+(function t(){const w=roles[ri2];ty2.textContent=w.slice(0,ci);
+  if(!del&&ci<w.length)ci++;else if(del&&ci>0)ci--;else{del=!del;if(!del)ri2=(ri2+1)%roles.length;return setTimeout(t,del?1400:300)}
+  setTimeout(t,del?40:90)})();
+
+// reveal + counters
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;e.target.classList.add('on');
+  e.target.querySelectorAll('[data-c]').forEach(b=>{const n=+b.dataset.c;let v=0;const s=setInterval(()=>{v+=Math.ceil(n/40);if(v>=n){v=n;clearInterval(s)}b.textContent=v+'+'},30)});
+  io.unobserve(e.target)}),{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// 3d tilt cards
+document.querySelectorAll('.card').forEach(c=>{c.onmousemove=e=>{const r=c.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
+  c.style.setProperty('--x',x+'px');c.style.setProperty('--y',y+'px');
+  c.style.transform=`perspective(900px) rotateY(${(x/r.width-.5)*14}deg) rotateX(${(.5-y/r.height)*14}deg)`};
+  c.addEventListener('mouseleave',()=>c.style.transform='')});
+
+// terminal
+const out=document.getElementById('out'),inp=document.getElementById('cmd');
+const cmds={help:'<span class="w">COMMANDS:</span> <span class="t">ABOUT SKILLS PROJECTS CONTACT HELLO SUBMIT D A,L Y2K WARP CLEAR</span>\n<span class="p">F1=HELP F3=CLEAR F12=RETRIEVE</span>',
+  about:'Mainframe developer. My code is older than some of my coworkers, and it still runs.',
+  skills:'langs  : COBOL PL/I REXX Assembler(HLASM)\nsystems: z/OS CICS IMS DB2 VSAM\ntools  : JCL ISPF Endevor Zowe DFSORT',
+  projects:'CORE.BANKING.API  BATCH.CRUSHER  VSAM2DB2  MF.DEVOPS',
+  contact:'→ SEE CONTACT SECTION BELOW',
+  hello:'<span class="k">       IDENTIFICATION DIVISION.\n       PROGRAM-ID. HELLO.\n       PROCEDURE DIVISION.\n           DISPLAY "HELLO, WORLD".\n           STOP RUN.</span>\nHELLO, WORLD',
+  submit:'<span class="k">IEF404I PORTFOLIO - ENDED - TIME=00.00.01\nJOB00042 $HASP395 PORTFOLIO ENDED - RC=0000</span>',
+  y2k:'<span class="y">Already fixed it. You\'re welcome.</span>',
+  'd a,l':'<span class="t">IEE114I '+new Date().toTimeString().slice(0,8)+' ACTIVITY</span>\n<span class="k"> JOBS     M/S    TS USERS    SYSAS    INITS\n 00042    00187    00001      00031    00012\n PORTFOLIO  STEP1  OWT    CICSPROD  IN  A\n DB2PMSTR   DB2P   NSW    Goodwin       OWT</span>',
+  warp:'<span class="k">engaging hyperdrive...</span>'};
+const print=h=>{out.innerHTML+=h+'\n';out.scrollTop=1e9};
+const ts=()=>new Date().toTimeString().slice(0,8);
+setInterval(()=>document.getElementById('clk').textContent=new Date().toISOString().slice(0,10)+' '+ts(),1000);
+print(`<span class="k">READY</span> - ENTER <span class="w">HELP</span> FOR COMMANDS`);
+let hist=[],hi=0;
+inp.addEventListener('keydown',e=>{if(e.key==='F12'||(e.key==='ArrowUp'&&hist.length)){e.preventDefault();hi=Math.max(0,hi-1);inp.value=hist[hi]||''}
+  if(e.key==='F3'){e.preventDefault();out.innerHTML=''}if(e.key==='F1'){e.preventDefault();inp.value='help';inp.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter'}))}});
+inp.onkeydown=e=>{if(e.key!=='Enter')return;const v=inp.value.trim();inp.value='';if(v){hist.push(v);hi=hist.length}
+  print(`<span class="t">${ts()}</span> <span class="w">Goodwin      ${v.toUpperCase().replace(/</g,'&lt;')}</span>`);
+  if(v==='clear'){out.innerHTML='';return}if(v==='warp')warp=20;
+  print(cmds[v.toLowerCase()]||`<span class="e">IKJ56500I COMMAND ${v.toUpperCase().replace(/</g,'&lt;')} NOT FOUND</span>`)};
+</script>
+</body>
+</html>
